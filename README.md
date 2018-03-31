@@ -1,2 +1,2 @@
 # PrenosDat
-Tomáš Klein - Prenos Dát - Apiary dokumntácia
+Tomáš Klein - Prenos Dát - Apiary dokumntácia - Retrofit klient
