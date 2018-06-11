@@ -1,190 +1,141 @@
 FORMAT: 1A
-HOST: http://prenosDat.apiblueprint.org/
+HOST: http://localhost:8080
 
-# TomasKlein -Prenos Dat
+# TomasKlein - Prenos Dat - server
 
-Polls is a simple API allowing consumers to view polls and vote in them.
 
-## List users [/api/users?page=2]
+## Show sensor data by ID [/data/{id}]
+### GET [GET]
+@RolesAllowed("BASIC_USER")
 
-### GET   [GET]
++ Parameters
+    + id (number) - ID of data, index in SQL database
 
-+ Response 200 (application/json)
++ Response 200 (sk.fri.uniza.microservice.Daat.ftl)
 
-        [
-           {
-            "page": 2,
-            "per_page": 3,
-            "total": 12,
-            "total_pages": 4,
-            "data": [
-                {
-                    "id": 4,
-                    "first_name": "Eve",
-                    "last_name": "Holt",
-                    "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/marcoramires/128.jpg"
-                },
-                {
-                    "id": 5,
-                    "first_name": "Charles",
-                    "last_name": "Morris",
-                    "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/stephenmoon/128.jpg"
-                },
-                {
-                    "id": 6,
-                    "first_name": "Tracey",
-                    "last_name": "Ramos",
-                    "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/bigmancho/128.jpg"
-                }
-            ]
-        }
-        ]
-        
-        
-## Single user [/api/users/2]
++ Response 404 (text/plain)
 
-### GET   [GET]
+   "Data in database by ID is not found"
 
-+ Response 200 (application/json)
 
-        {
-            "data": {
-                "id": 2,
-                "first_name": "Janet",
-                "last_name": "Weaver",
-                "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/josephstein/128.jpg"
-            }
-        }
-        
-        
-### PUT - UPDATE   [PUT]
+## Edit Data [/data/edit/{id}]
+### GET [GET]
+@RolesAllowed("BASIC_USER")
 
-+ Request (application/json)
++ Parameters
+    + id (number) - ID of data, index in SQL database
 
-        {
-            "name": "morpheus",
-            "job": "zion resident"
-        }
++ Response 200 (sk.fri.uniza.microservice.addEdit.ftl)
+            
++ Response 404 (text/plain)
 
-+ Response 200 (application/json)
-
-    + Body
-
-            {
-                "name": "morpheus",
-                "job": "zion resident",
-                "updatedAt": "2018-03-21T17:27:55.801Z"
-            }
-
-### PATCH - UPDATE   [PATCH]
-
-+ Request (application/json)
-
-        {
-            "name": "morpheus",
-            "job": "zion resident"
-        }
-
-+ Response 200 (application/json)
-
-    + Body
-
-            {
-                "name": "morpheus",
-                "job": "zion resident",
-                "updatedAt": "2018-03-21T17:33:23.441Z"
-            }
-
-### DELETE   [DELETE]
-
-+ Response 204 (application/json)
+   "Data in database by ID is not found"
    
+## Add Data - autentificate [/data/add]
+### GET [GET]
+@RolesAllowed("BASIC_USER")
 
-## Single user - NOT FOUND [/api/users/23]
-
-### GET   [GET]
-
-+ Response 404 (application/json)
++ Response 200 (sk.fri.uniza.microservice.addEdit.ftl)
 
 
-## List <resource> [/api/unknown]
+## Add  Data - everyone [/new]
+### POST [POST]
 
-### GET   [GET]
++ Attributes
+    + param1: date (string)  - Time of messuring
+    + param2: temp (number)  - Temperature
+    + param3: hum  (number)  - Humidity
+    + param4: ID   (string)  - Token
 
-+ Response 200 (application/json)
 
-        {
-            "page": 1,
-            "per_page": 3,
-            "total": 12,
-            "total_pages": 4,
-            "data": [
-                {
-                    "id": 1,
-                    "name": "cerulean",
-                    "year": 2000,
-                    "color": "#98B2D1",
-                    "pantone_value": "15-4020"
-                },
-                {
-                    "id": 2,
-                    "name": "fuchsia rose",
-                    "year": 2001,
-                    "color": "#C74375",
-                    "pantone_value": "17-2031"
-                },
-                {
-                    "id": 3,
-                    "name": "true red",
-                    "year": 2002,
-                    "color": "#BF1932",
-                    "pantone_value": "19-1664"
-            }
-        ]
-        }
-        
-## Single <resource> [/api/unknown/2]
++ Request (application/x-www-form-urlencoded)
 
-### GET   [GET]
++ Response 200
+        Data wad add
+            
+            
 
-+ Response 200 (application/json)
+## New data - URL  [/data/new]
+### POST [POST]
+@RolesAllowed("BASIC_USER")
 
-        {
-            "data": {
-                    "id": 2,
-                    "name": "fuchsia rose",
-                    "year": 2001,
-                    "color": "#C74375",
-                    "pantone_value": "17-2031"
-                    }
-        }
-        
-        
-## Single <resource>  - NOT FOUND [/api/unknown/23]
++ Attributes
+    + param1: date (string)  - Time of messuring
+    + param2: temp (number)  - Temperature
+    + param3: hum  (number)  - Humidity
 
-### GET   [GET]
 
-+ Response 404 (application/json)
++ Request (application/x-www-form-urlencoded)
 
-        
-## USER create [/api/user]
++ Response 200
 
+## Edit Data  [/data/edit]
+### POST [POST]
+@RolesAllowed("BASIC_USER")
+
++ Attributes
+    + param1: date (string)  - Time of messuring
+    + param2: temp (number)  - Temperature
+    + param3: hum  (number)  - Humidity
+    + param4: ID   (string)  - ID
+
+
++ Request (application/x-www-form-urlencoded)
+
++ Response 200 (sk.fri.uniza.microservice.Daat.ftl)
+
+
+## Creat Data - JSON [/data]
 ### POST   [POST]
+@RolesAllowed("BASIC_USER")
 
 + Request (application/json)
 
         {
-            "name": "morpheus",
-            "job": "leader"
+        "temp": "temp",
+        "date": "date",
+        "hum": "hum"
         }
+        
++ Response 200
 
-+ Response 201 (application/json)
 
-    + Body
+## Delete - data [/delete/{id}]
+### GET   [GET]
+@RolesAllowed("BASIC_USER")
 
-            {
-               "name": "morpheus",
-                "job": "leader",
-                "id": "584",
-                "createdAt": "2018-03-21T17:40:27.152Z"
-            }
++ Parameters
+    + id (number) - ID of data, index in SQL database
+
++ Response 200 (sk.fri.uniza.microservice.list.ftl)
+
++ Response 404 (text/plain)
+
+   Data in database by ID is not found
+   
+## Delete - data - admin [/{id}]
+### DELETE   [DELETE]
+@RolesAllowed("ADMIN")
+
++ Parameters
+    + id (number) - ID of data, index in SQL database
+    
++ Request (application/json)
+
++ Response 200 (sk.fri.uniza.microservice.list.ftl)
+
++ Response 404 (text/plain)
+
+   Data in database by ID is not found
+   
+## Show page with datas [/data/list]
+### GET [GET]
+@RolesAllowed("BASIC_USER")
+
++ Response 200 (sk.fri.uniza.microservice.list.ftl)
+
+## Show page with charts [/data/chart]
+### GET [GET]
+@RolesAllowed("BASIC_USER")
+
++ Response 200 (sk.fri.uniza.microservice.chart.ftl)
